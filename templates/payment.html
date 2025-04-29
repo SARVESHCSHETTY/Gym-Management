@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+body {
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.payment-container {
+    background: #1c1c1c;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+    position: relative;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* White glow on hover */
+.payment-container:hover {
+    box-shadow: 0 0 25px 10px #fff;
+}
+
+.checkmark {
+    font-size: 50px;
+    color: #28a745;
+    margin-bottom: 10px;
+    animation: checkmarkAnimation 1s ease-in-out;
+}
+
+.text-success {
+    color: #28a745;
+}
+
+.text-primary {
+    color: #007bff;
+}
+
+.terms {
+    margin: 20px 0;
+    text-align: left;
+}
+
+.terms input {
+    margin-right: 10px;
+}
+
+.terms label {
+    color: #fff;
+}
+
+.tooltip {
+    position: relative;
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1;
+}
+
+/* Initially hide the warning */
+.refund-warning {
+    display: none;
+    color: #ff0000;
+    margin-top: 10px;
+}
+
+/* Only show the warning when hovering over .terms if the container does not have the accepted class */
+.payment-container:not(.accepted) .terms:hover + .refund-warning {
+    display: block;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.btn-warning:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.btn-warning:hover:enabled {
+    transform: scale(1.05);
+}
+.payment-container:not(.accepted) .terms:hover + .refund-warning {
+    display: block;
+}
+.Term{
+    color: #007bff;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes checkmarkAnimation {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const termsCheckbox = document.getElementById('terms-checkbox');
+    const payNowButton = document.getElementById('rzp-button1');
+    const container = document.getElementById('payment-container');
+
+    // Enable or disable the Pay Now button based on checkbox state.
+    function togglePayNowButton() {
+        payNowButton.disabled = !termsCheckbox.checked;
+    }
+
+    
+    function updateContainerState() {
+        if (termsCheckbox.checked) {
+            container.classList.add('accepted');
+        } else {
+            container.classList.remove('accepted');
+        }
+    }
+
+    
+    termsCheckbox.addEventListener('change', function () {
+        togglePayNowButton();
+        updateContainerState();
+    });
+
+    
+    togglePayNowButton();
+    updateContainerState();
+});
+
+</script>
+
+</head>
+<body>
+
+<div class="payment-container" id="payment-container">
+    <div class="checkmark">✔</div>
+    <h2 class="text-success">Payment</h2>
+    <p><strong>Order ID:</strong> <span class="text-primary">{{ order_id }}</span></p>
+    
+    <div class="terms">
+        <input type="checkbox" id="terms-checkbox" name="terms" required>
+        <label for="terms-checkbox">
+            I agree to the 
+            <span class="Term" >Terms and Conditions</span>
+        </label>
+    </div>
+    
+    <p class="refund-warning">After payment, the amount will not be refunded.</p>
+    <br>
+     <button id="rzp-button1" class="btn btn-warning" disabled>Pay Now</button>
+</div>
+
+
+
+    <script>
+        var options = {
+            "key": "rzp_test_p7USVUornPr0I4",
+            "amount": "{{ amount }}" * 100,  
+            "currency": "INR",
+            "name": "Dimond Fitness",
+            "description": "Membership Payment",
+            "order_id": "{{ order_id }}",
+            "handler": function (response) {
+                window.location.href = "/payment-success/?payment_id=" + response.razorpay_payment_id + "&order_id=" + response.razorpay_order_id;
+            },
+            "prefill": {
+                "name": "{{ FullName }}",
+                "email": "{{ email }}",
+                "contact": "{{ PhoneNumber }}"
+            },
+            "theme": {
+                "color": "#F37254"
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        document.getElementById('rzp-button1').onclick = function(e){
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script>
+</body>
+</html>

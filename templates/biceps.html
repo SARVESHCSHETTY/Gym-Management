@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Workout - Dimond Fitness</title>
+    {% load static %}  <!-- Load static files -->
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .workout-image {
+            width: 300px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            margin: 20px;
+        }
+        .caption {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            color: #ff9900;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome to Dimond Fitness</h1>
+        <img class="workout-image" src="{% static 'gif/biceps.gif' %}" alt="Biceps workout">
+        <img class="workout-image" src="{% static 'gif/triceps.gif' %}" alt="Triceps workout">
+        <div class="caption">Biceps & Triceps Workout</div>
+
+        <!-- Go Back Link -->
+        <a href="/" class="back-link">⬅ Go Back</a>
+    </div>
+
+</body>
+</html>

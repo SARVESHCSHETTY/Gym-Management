@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Signup
+{% endblock title %}
+
+{% block body %}
+<h2>Sign Up Here</h2>
+<div class="container mt-2">
+    <div class="row">
+
+        <div class="col-md-4"> </div>
+
+        <div class="col-md-4">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <strong></strong> {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+
+            <form action="{% url 'signup' %}" method="post">{% csrf_token %}
+
+
+                <div class="form-group">
+                    <input type="text" class="form-control mb-2" name="usernumber" placeholder="Phone Number" required 
+                    maxlength="10" pattern="\d{10}" title="Phone number must be exactly 10 digits and Only Digits are allowed.">
+                </div>
+
+                <div class="form-group">
+                    <input type="email" class="form-control" name="email" placeholder="Email" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-control mt-2" name="pass1" placeholder="Password" required
+           pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,10}$" 
+           title="Password must be 6-10 characters long, with at least one uppercase letter, one number, and one special character.">
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-control mt-2" name="pass2" placeholder="Confirm Password" required>
+                </div>
+
+                <br>
+
+                <div class="d-grid gap-2">
+                    <button class="btn btn-light" type="submit">Signup</button>
+                </div>
+
+            </form>
+            <br><a href="/login">Already a User?</a>
+
+        </div>
+
+        <div class="col-md-3"></div>
+
+    </div>
+</div>
+
+{% endblock body %}

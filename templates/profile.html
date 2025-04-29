@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block title %}
+Profile
+{% endblock title %}
+{% block body %}
+
+<div class="container">
+
+    <div class="row">
+    
+    <div class="col-md-4">
+    <h1 class="text-center mb-4">Enrollment Details</h1>
+
+    {% for post in posts %}
+    <div class="card shadow-lg mb-4" style="background: linear-gradient(135deg, #f9d423 0%, #ff4e50 100%); color: #fff; border-radius: 15px;">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-3">{{ post.FullName }}</h3>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-transparent border-0 text-white"><strong>Email:</strong> {{ post.Email }}</li>
+                <li class="list-group-item bg-transparent border-0 text-white"><strong>Gender:</strong> {{ post.Gender }}</li>
+                <li class="list-group-item bg-transparent border-0 text-white"><strong>Phone Number:</strong> {{ post.PhoneNumber }}</li>
+                <li class="list-group-item bg-transparent border-0 text-white"><strong>Date of Birth:</strong> {{ post.DOB }}</li>
+                <li class="list-group-item bg-transparent border-0 text-white"><strong>Membership Plan:</strong> 
+                    <span class="badge bg-success">{{ post.SelectMembershipplan }}</span>
+                </li>
+                <li class="list-group-item bg-transparent border-0 text-white"><strong>Trainer:</strong> {{ post.SelectTrainer }}</li>
+                <li class="list-group-item bg-transparent border-0 text-white"><strong>Reference:</strong> {{ post.Reference }}</li>
+                <li class="list-group-item bg-transparent border-0 text-white"><strong>Address:</strong> {{ post.Address }}</li>
+                <li class="list-group-item bg-transparent border-0 text-white"><strong>Payment Status:</strong> 
+                    {% if post.paymentStatus == "Paid" %}
+                        <span class="badge bg-primary">Paid</span>
+                    {% else %}
+                        <span class="badge bg-danger">Pending</span>
+                    {% endif %}
+                </li>
+                <li class="list-group-item bg-transparent border-0 text-white"><strong>Amount Paid:</strong> ₹{{ post.Price }}</li>
+                <li class="list-group-item bg-transparent border-0 text-white"><strong>Upcoming Due Date:</strong> {{ post.DueDate }}</li>
+                <li class="list-group-item bg-transparent border-0 text-white"><strong>Joining Date:</strong> {{ post.timeStamp }}</li>
+            </ul>
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+    
+    <div class="col-md-8">
+
+
+      <div><Center><h2 class="display-4 mt-3"><b>Attendance Data</b></h2></Center></div>
+
+  
+      
+      <table class="table">
+        <thead class="thead-warning">
+          <tr>
+          
+            <th scope="col">Date</th>
+            <th scope="col">Login</th>
+            <th scope="col">Logout</th>
+            <th scope="col">Workout</th>
+            <th scope="col">Trained By</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for attend in attendance %}
+          <tr>
+            
+            <td>{{attend.Selectdate}}</td>
+            <td>{{attend.Login}}</td>
+            <td>{{attend.Logout}}</td>
+            <td>{{attend.SelectWorkout}}</td>
+            <td>{{attend.TrainedBy}}</td>
+            
+           
+         
+            
+           
+          </tr>
+          {% endfor %}
+        
+        </tbody>
+      </table>
+    
+    
+    </div>
+    
+    
+    
+    
+    
+    </div>
+
+
+
+
+{% endblock body %}
